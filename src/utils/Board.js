@@ -1,16 +1,27 @@
-import { Snake } from './Snake';
-import { SNAKES } from './constants';
+import { Snake } from './Snake.js';
+import { SNAKES } from './constants.js';
 
 export const Board = () => {
   const cells = getNewMap();
   const snakes = SNAKES.map((snake) => Snake(snake));
   let horizontal = true;
 
+  const isHorizontal = () => horizontal;
+
   const getUnplaced = () => snakes.filter((snake) => !snake.isPlaced());
 
-  let selectedSnake = getUnplaced()[0];
+  let selectedSnake = snakes.find((snake) => snake.name === 'Anaconda');
+
+  const changeSelected = (snakeName) => {
+    selectedSnake = getUnplaced().find((snake) => snake.name === snakeName);
+  };
+
+  const getSelectedSnake = () => selectedSnake;
+
+  const changeAxis = () => (horizontal = !horizontal);
 
   const getPlacementCells = (row, col) => {
+    if (!selectedSnake) return;
     let placementCells = [];
     for (let i = 0; i < selectedSnake.size; i++) {
       if (horizontal) {
@@ -27,8 +38,7 @@ export const Board = () => {
     placementCells.forEach(({ row, col }) => {
       if (row > 9 || col > 9) {
         valid = false;
-      }
-      if (cells[row][col] !== 'empty') {
+      } else if (cells[row] && cells[row][col].snake) {
         valid = false;
       }
     });
@@ -36,35 +46,42 @@ export const Board = () => {
   };
 
   const placeSnake = (placementCells) => {
-    if (!validatePlacementCells(placementCells)) return;
+    if (!validatePlacementCells(placementCells)) return false;
     const placedSnake = selectedSnake;
+    console.log(placementCells);
 
     placementCells.forEach(({ row, col }) => {
-      cells[row][col] = placedSnake;
-      placedSnake.cells.push([row, col]);
+      const currentCell = cells[row][col];
+      console.log(currentCell);
+      currentCell.snake = placedSnake;
+      console.log(cells[row]);
+      placedSnake.cells.push({ row, col });
     });
 
-    if (getUnplaced().length > 0) {
-      selectedSnake = getUnplaced()[0];
-    }
+    getUnplaced().length > 0
+      ? (selectedSnake = getUnplaced()[0])
+      : (selectedSnake = null);
 
     return { snake: placedSnake, cells: placementCells };
   };
 
   const placeAllRandom = () => {
     getUnplaced().forEach((snake) => {
+      console.log('placing ', snake.name);
       selectedSnake = snake;
       let tries = 0;
-      const row = Math.floor(Math.random() * 10);
-      const col = Math.floor(Math.random() * 10);
-      if (Math.random() > 0.5) {
-        horizontal = !horizontal;
-      }
 
       while (tries < 100) {
+        const row = Math.floor(Math.random() * 10);
+        const col = Math.floor(Math.random() * 10);
+        if (Math.random() > 0.5) {
+          horizontal = !horizontal;
+        }
+        console.log('try ', tries, 'row ', row, 'col ', col);
         const placementCells = getPlacementCells(row, col);
         if (validatePlacementCells(placementCells)) {
           placeSnake(placementCells);
+          console.log('placed ', snake.name);
           return;
         }
         tries++;
@@ -72,19 +89,19 @@ export const Board = () => {
     });
   };
 
+  const allPlaced = () => getUnplaced().length === 0;
+
   const receiveAttack = (row, col) => {
-    if (cells[row][col] === 'hit' || cells[row][col] === 'miss') {
+    if (cells[row][col].shot) {
       return { row, col, result: 'repeat' };
     }
 
-    if (cells[row][col] === 'empty') {
-      cells[row][col] = 'miss';
+    if (!cells[row][col].snake) {
+      cells[row][col].shot = true;
       return { row, col, result: 'miss' };
-    }
-
-    if (typeof cells[row][col] === 'object') {
-      cells[row][col].hit();
-      cells[row][col] = 'hit';
+    } else {
+      cells[row][col].snake.hit();
+      cells[row][col].shot = true;
       return { row, col, result: 'hit' };
     }
   };
@@ -93,21 +110,33 @@ export const Board = () => {
     snakes.filter((snake) => snake.isDead()).length === snakes.length;
 
   function getNewMap() {
-    return Array(10)
+    const map = Array(10)
       .fill(null)
-      .map(() => Array(10).fill('empty'));
+      .map(() =>
+        Array(10)
+          .fill(null)
+          .map(() => {
+            const ref = { snake: false, shot: false };
+            return { ...ref };
+          })
+      );
+
+    return map;
   }
 
   return {
     cells,
     snakes,
-    selectedSnake,
-    horizontal,
+    getSelectedSnake,
+    changeSelected,
+    isHorizontal,
+    changeAxis,
     getUnplaced,
     getPlacementCells,
     validatePlacementCells,
     placeSnake,
     placeAllRandom,
+    allPlaced,
     receiveAttack,
     areAllDead,
   };

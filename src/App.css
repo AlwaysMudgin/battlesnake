@@ -1,0 +1,15 @@
+.turn {
+  text-align: center;
+  margin-block-end: 1rem;
+}
+
+.boards {
+  display: flex;
+  justify-content: space-around;
+}
+
+.log {
+  padding: 0;
+  margin: 2rem auto;
+  width: max-content;
+}

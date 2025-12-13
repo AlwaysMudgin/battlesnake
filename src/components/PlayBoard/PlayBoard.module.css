@@ -1,0 +1,57 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 2px;
+  background-color: black;
+}
+
+.row {
+  display: flex;
+  gap: 2px;
+}
+
+.cell {
+  --dimensions: 2rem;
+  background-color: white;
+  min-width: var(--dimensions);
+  height: var(--dimensions);
+  border: none;
+}
+
+.selected {
+  background-color: yellow;
+}
+
+.anaconda {
+  background-color: lightgreen;
+}
+
+.cobra {
+  background-color: lightcoral;
+}
+
+.viper {
+  background-color: lightgoldenrodyellow;
+}
+
+.python {
+  background-color: gold;
+}
+
+.mamba {
+  background-color: lightblue;
+}
+
+.target {
+  background-color: red;
+}
+
+.hit {
+  border: 2px solid red;
+}
+
+.miss {
+  border: 2px solid gray;
+}

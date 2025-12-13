@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 2px;
+  background-color: black;
+}
+
+.row {
+  display: flex;
+  gap: 2px;
+}
+
+.cell {
+  --dimensions: 2rem;
+  background-color: white;
+  min-width: var(--dimensions);
+  height: var(--dimensions);
+  border: none;
+}
+
+.valid {
+  background-color: green;
+}
+
+.invalid {
+  background-color: red;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pips {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pip {
+  --dimensions: 1rem;
+  width: var(--dimensions);
+  height: var(--dimensions);
+  background-color: green;
+}
+
+.snake {
+  display: block;
+}
+
+.selected {
+  background-color: yellow;
+}
+
+.anaconda {
+  background-color: lightgreen;
+}
+
+.cobra {
+  background-color: lightcoral;
+}
+
+.viper {
+  background-color: lightgoldenrodyellow;
+}
+
+.python {
+  background-color: gold;
+}
+
+.mamba {
+  background-color: lightblue;
+}
