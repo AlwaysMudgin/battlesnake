@@ -7,6 +7,10 @@ export const Snake = (snake) => {
   const isPlaced = () => cells.length > 0;
   const isDead = () => hits >= size;
   const hit = () => hits++;
+  const reset = () => {
+    hits = 0;
+    cells.length = 0;
+  };
 
   return {
     name,
@@ -16,5 +20,6 @@ export const Snake = (snake) => {
     isPlaced,
     hit,
     isDead,
+    reset,
   };
 };

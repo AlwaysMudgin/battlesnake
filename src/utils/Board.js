@@ -124,6 +124,19 @@ export const Board = () => {
     return map;
   }
 
+  function resetBoard() {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        cells[i][j].snake = false;
+        cells[i][j].shot = false;
+      }
+    }
+
+    snakes.forEach((snake) => snake.reset());
+
+    selectedSnake = snakes.find((snake) => snake.name === 'Anaconda');
+  }
+
   return {
     cells,
     snakes,
@@ -139,5 +152,6 @@ export const Board = () => {
     allPlaced,
     receiveAttack,
     areAllDead,
+    resetBoard,
   };
 };

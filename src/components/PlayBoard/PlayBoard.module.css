@@ -18,6 +18,12 @@
   min-width: var(--dimensions);
   height: var(--dimensions);
   border: none;
+  padding: 0;
+}
+
+.cell svg {
+  width: 100%;
+  height: 100%;
 }
 
 .selected {
@@ -48,10 +54,12 @@
   background-color: red;
 }
 
-.hit {
-  border: 2px solid red;
+svg {
+  transition: all 0.5s ease-in-out allow-discrete;
 }
 
-.miss {
-  border: 2px solid gray;
+@starting-style {
+  svg {
+    transform: scale(0);
+  }
 }

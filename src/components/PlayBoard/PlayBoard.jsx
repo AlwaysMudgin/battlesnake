@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './PlayBoard.module.css';
+import { Circle, XCircle } from 'react-feather';
 
-function PlayBoard({ player, game, turns, checkEnd }) {
+function PlayBoard({ player, game, turns, checkEnd, playTrack, phase }) {
   const [hoverCell, setHoverCell] = React.useState();
   const { playerTurn, setPlayerTurn } = turns;
 
@@ -44,12 +45,14 @@ function PlayBoard({ player, game, turns, checkEnd }) {
   }
 
   function handleMouseEnter(row, col) {
+    if (phase === 'end') return;
     if (player.name === 'opponent' && playerTurn) {
       setHoverCell({ row, col });
     }
   }
 
   function handleMouseLeave() {
+    if (phase === 'end') return;
     if (player.name === 'opponent' && playerTurn) {
       setHoverCell();
     }
@@ -57,6 +60,7 @@ function PlayBoard({ player, game, turns, checkEnd }) {
 
   function handleClick(row, col) {
     if (
+      phase === 'end' ||
       player.name === 'player' ||
       !game.isPlayerTurn() ||
       player.board.cells[row][col].shot
@@ -65,6 +69,8 @@ function PlayBoard({ player, game, turns, checkEnd }) {
 
     const attack = game.playerAttack(row, col);
     console.log(attack);
+
+    playTrack(attack.result);
 
     if (checkEnd()) return;
 
@@ -84,7 +90,15 @@ function PlayBoard({ player, game, turns, checkEnd }) {
                   onMouseEnter={() => handleMouseEnter(rowIndex, colIndex)}
                   onMouseLeave={() => handleMouseLeave(rowIndex, colIndex)}
                   onClick={() => handleClick(rowIndex, colIndex)}
-                />
+                >
+                  {!col.shot ? (
+                    ''
+                  ) : col.snake ? (
+                    <XCircle color="red" size={32} />
+                  ) : (
+                    <Circle color="silver" size={32} />
+                  )}
+                </button>
               );
             })}
           </div>

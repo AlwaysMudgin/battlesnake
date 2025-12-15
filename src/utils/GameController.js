@@ -6,8 +6,10 @@ export const GameController = () => {
 
   opponent.board.placeAllRandom();
 
-  let phase = 'setup';
+  let phase = 'intro';
   const getPhase = () => phase;
+
+  const setup = () => (phase = 'setup');
 
   let playerTurn = true;
   const isPlayerTurn = () => playerTurn;
@@ -66,10 +68,25 @@ export const GameController = () => {
     return false;
   };
 
+  const getWinner = () => {
+    if (player.hasLost()) return opponent.name;
+    if (opponent.hasLost()) return player.name;
+  };
+
+  const newGame = () => {
+    player.board.resetBoard();
+    opponent.board.resetBoard();
+    attackLog.length = 0;
+    phase = 'setup';
+    opponent.board.placeAllRandom();
+    playerTurn = true;
+  };
+
   return {
     player,
     opponent,
     getPhase,
+    setup,
     isPlayerTurn,
     nextTurn,
     allReady,
@@ -78,5 +95,7 @@ export const GameController = () => {
     opponentAttack,
     attackLog,
     checkWinner,
+    getWinner,
+    newGame,
   };
 };

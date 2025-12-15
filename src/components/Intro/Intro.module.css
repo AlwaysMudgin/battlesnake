@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  justify-content: center;
+  height: auto;
+  width: 100%;
+  padding: 1rem;
+  transition: all 4s ease-in-out;
+  background-color: #8b491c;
+  color: #fffbaa;
+  overflow: hidden;
+}
+
+.container.intro {
+  position: absolute;
+  height: 100dvh;
+  width: 100vw;
+}
+
+.content {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  --dimensions-reg: 3rem;
+  display: inline-block;
+  transform: translate(0);
+  height: var(--dimensions-reg);
+  width: var(--dimensions-reg);
+  transition: all 4s ease-in-out allow-discrete;
+}
+
+.image.intro {
+  display: none;
+  transform: translate(-200%, 0);
+}
+
+.button {
+  display: none;
+}
+
+.button.intro {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.battle {
+  display: inline;
+  transform: translate(0);
+  transition: all 4s ease-in-out allow-discrete;
+}
+
+.battle.intro {
+  display: none;
+}
+
+@starting-style {
+  .image {
+    transform: translate(-800%, 0);
+  }
+
+  .battle {
+    transform: translate(400%, 0);
+  }
+}

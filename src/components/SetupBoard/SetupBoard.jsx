@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './SetupBoard.module.css';
 
-function SetupBoard({ board, start }) {
+function SetupBoard({ phase, board, start, playTrack }) {
   const [selectedSnake, setSelectedSnake] = React.useState(
     board.getSelectedSnake()
   );
@@ -49,9 +49,11 @@ function SetupBoard({ board, start }) {
     setUnplacedSnakes(board.getUnplaced());
     setSelectedSnake(board.getSelectedSnake());
     setPreviewCells([]);
+    playTrack('snake');
   }
 
   function handleSelect(snakeName) {
+    playTrack('snake');
     board.changeSelected(snakeName);
     setSelectedSnake(board.getSelectedSnake());
   }
@@ -61,10 +63,13 @@ function SetupBoard({ board, start }) {
     setSelectedSnake(board.getSelectedSnake());
     setUnplacedSnakes(board.getUnplaced());
     setErrorMessage('');
+    playTrack('snake');
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${phase === 'intro' ? styles.hide : ''}`}
+    >
       <div>
         <div className={styles.board}>
           {board.cells.map((row, rowIndex) => {
